@@ -14,7 +14,7 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <img 
-              src="/@assets/generated_images/SpendSight_finance_tracker_logo_f7c8de5f.png" 
+              src="/@assets/generated_images/SpendSight_minimalist_app_logo_fa57704e.png" 
               alt="SpendSight Logo" 
               className="w-8 h-8 rounded-lg"
             />
@@ -137,7 +137,7 @@ export default function Landing() {
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <img 
-              src="/@assets/generated_images/SpendSight_finance_tracker_logo_f7c8de5f.png" 
+              src="/@assets/generated_images/SpendSight_minimalist_app_logo_fa57704e.png" 
               alt="SpendSight Logo" 
               className="w-6 h-6 rounded"
             />
