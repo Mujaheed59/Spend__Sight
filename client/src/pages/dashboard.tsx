@@ -100,7 +100,7 @@ export default function Dashboard() {
             </Sheet>
             <div className="flex items-center space-x-2">
               <img 
-                src="/@assets/generated_images/SpendSight_finance_tracker_logo_f7c8de5f.png" 
+                src="/@assets/{84372BD1-1A6B-4728-9D4E-AD72EB2908F6}_1757179515574.png" 
                 alt="SpendSight Logo" 
                 className="w-6 h-6 rounded"
               />

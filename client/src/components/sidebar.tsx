@@ -48,7 +48,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         {/* Logo */}
         <div className="flex items-center flex-shrink-0 px-4">
           <img 
-            src="/@assets/generated_images/SpendSight_minimalist_app_logo_fa57704e.png" 
+            src="/@assets/{84372BD1-1A6B-4728-9D4E-AD72EB2908F6}_1757179515574.png" 
             alt="SpendSight Logo" 
             className="w-8 h-8 rounded-lg"
           />

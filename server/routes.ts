@@ -86,13 +86,19 @@ export async function registerRoutes(app: Express, httpServer?: any): Promise<Se
   app.get("/api/user/profile", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.id;
-      // For now, return a basic profile. In future, this could be stored in database
-      const profile = {
-        id: userId,
-        monthlyIncome: 50000, // Default monthly income in INR
-        currency: 'INR',
-        timezone: 'Asia/Kolkata'
-      };
+      let profile = await storage.getUserProfile(userId);
+      
+      if (!profile) {
+        // Create default profile for new users
+        profile = {
+          id: userId,
+          monthlyIncome: 50000,
+          currency: 'INR',
+          timezone: 'Asia/Kolkata'
+        };
+        await storage.updateUserProfile(userId, profile);
+      }
+      
       res.json(profile);
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -105,13 +111,11 @@ export async function registerRoutes(app: Express, httpServer?: any): Promise<Se
       const userId = req.user.id;
       const { monthlyIncome, currency, timezone } = req.body;
       
-      // For now, just return the updated data. In future, store in database
-      const updatedProfile = {
-        id: userId,
+      const updatedProfile = await storage.updateUserProfile(userId, {
         monthlyIncome: monthlyIncome || 50000,
         currency: currency || 'INR',
         timezone: timezone || 'Asia/Kolkata'
-      };
+      });
       
       res.json(updatedProfile);
     } catch (error) {
