@@ -496,7 +496,18 @@ export class MongoStorage implements IStorage {
       amount: parseFloat(expense.amount)
     });
     const savedExpense = await newExpense.save();
-    return { ...savedExpense.toObject(), id: savedExpense._id.toString() };
+    const expenseObject = savedExpense.toObject();
+    return {
+      id: savedExpense._id.toString(),
+      userId: expenseObject.userId,
+      categoryId: expenseObject.categoryId,
+      amount: expenseObject.amount,
+      description: expenseObject.description,
+      paymentMethod: expenseObject.paymentMethod,
+      date: expenseObject.date,
+      createdAt: expenseObject.createdAt,
+      updatedAt: expenseObject.updatedAt
+    };
   }
 
   async updateExpense(id: string, expense: Partial<InsertExpense>): Promise<Expense> {
@@ -516,7 +527,18 @@ export class MongoStorage implements IStorage {
       throw new Error('Expense not found');
     }
     
-    return { ...updatedExpense.toObject(), id: updatedExpense._id.toString() };
+    const expenseObject = updatedExpense.toObject();
+    return {
+      id: updatedExpense._id.toString(),
+      userId: expenseObject.userId,
+      categoryId: expenseObject.categoryId,
+      amount: expenseObject.amount,
+      description: expenseObject.description,
+      paymentMethod: expenseObject.paymentMethod,
+      date: expenseObject.date,
+      createdAt: expenseObject.createdAt,
+      updatedAt: expenseObject.updatedAt
+    };
   }
 
   async deleteExpense(id: string): Promise<void> {
@@ -528,13 +550,32 @@ export class MongoStorage implements IStorage {
     const insights = await InsightModel.find({ userId })
       .sort({ createdAt: -1 })
       .lean();
-    return insights.map(insight => ({ ...insight, id: insight._id.toString() }));
+    return insights.map(insight => ({
+      id: insight._id.toString(),
+      userId: insight.userId,
+      type: insight.type,
+      title: insight.title,
+      description: insight.description,
+      priority: insight.priority,
+      isRead: insight.isRead,
+      createdAt: insight.createdAt
+    }));
   }
 
   async createInsight(insight: InsertInsight & { userId: string }): Promise<Insight> {
     const newInsight = new InsightModel(insight);
     const savedInsight = await newInsight.save();
-    return { ...savedInsight.toObject(), id: savedInsight._id.toString() };
+    const insightObject = savedInsight.toObject();
+    return {
+      id: savedInsight._id.toString(),
+      userId: insightObject.userId,
+      type: insightObject.type,
+      title: insightObject.title,
+      description: insightObject.description,
+      priority: insightObject.priority,
+      isRead: insightObject.isRead,
+      createdAt: insightObject.createdAt
+    };
   }
 
   async markInsightAsRead(id: string): Promise<void> {
@@ -550,7 +591,17 @@ export class MongoStorage implements IStorage {
     const budgets = await BudgetModel.find({ userId })
       .sort({ createdAt: -1 })
       .lean();
-    return budgets.map(budget => ({ ...budget, id: budget._id.toString() }));
+    return budgets.map(budget => ({
+      id: budget._id.toString(),
+      userId: budget.userId,
+      categoryId: budget.categoryId,
+      amount: budget.amount,
+      period: budget.period,
+      startDate: budget.startDate,
+      endDate: budget.endDate,
+      createdAt: budget.createdAt,
+      updatedAt: budget.updatedAt
+    }));
   }
 
   async createBudget(budget: InsertBudget & { userId: string }): Promise<Budget> {
@@ -559,7 +610,18 @@ export class MongoStorage implements IStorage {
       amount: parseFloat(budget.amount)
     });
     const savedBudget = await newBudget.save();
-    return { ...savedBudget.toObject(), id: savedBudget._id.toString() };
+    const budgetObject = savedBudget.toObject();
+    return {
+      id: savedBudget._id.toString(),
+      userId: budgetObject.userId,
+      categoryId: budgetObject.categoryId,
+      amount: budgetObject.amount,
+      period: budgetObject.period,
+      startDate: budgetObject.startDate,
+      endDate: budgetObject.endDate,
+      createdAt: budgetObject.createdAt,
+      updatedAt: budgetObject.updatedAt
+    };
   }
 
   async deleteBudget(id: string): Promise<void> {
