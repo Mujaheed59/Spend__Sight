@@ -439,9 +439,19 @@ export default function ReportsPage() {
                     </tbody>
                   </table>
                   {filteredExpenses.length > 20 && (
-                    <p className="text-center text-gray-500 text-sm mt-4">
-                      Showing 20 of {filteredExpenses.length} transactions. Export for full data.
-                    </p>
+                    <div className="text-center mt-4">
+                      <p className="text-gray-500 text-sm mb-2">
+                        Showing 20 of {filteredExpenses.length} transactions.
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => window.location.href = '/'}
+                        data-testid="button-back-to-dashboard"
+                      >
+                        Back to Dashboard
+                      </Button>
+                    </div>
                   )}
                 </div>
               </CardContent>

@@ -149,7 +149,9 @@ export class MemStorage implements IStorage {
     const id = this.generateId();
     const newCategory: Category = {
       id,
-      ...category,
+      name: category.name,
+      color: category.color,
+      icon: category.icon,
       createdAt: new Date()
     };
     this.categories.set(id, newCategory);
@@ -187,9 +189,12 @@ export class MemStorage implements IStorage {
     const id = this.generateId();
     const newExpense: Expense = {
       id,
-      ...expense,
+      userId: expense.userId,
+      categoryId: expense.categoryId,
       amount: typeof expense.amount === 'string' ? parseFloat(expense.amount) : expense.amount,
+      description: expense.description,
       paymentMethod: expense.paymentMethod,
+      date: expense.date,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -226,7 +231,12 @@ export class MemStorage implements IStorage {
     const id = this.generateId();
     const newInsight: Insight = {
       id,
-      ...insight,
+      userId: insight.userId,
+      type: insight.type,
+      title: insight.title,
+      description: insight.description,
+      priority: insight.priority,
+      isRead: insight.isRead,
       createdAt: new Date()
     };
     this.insights.set(id, newInsight);
@@ -259,8 +269,12 @@ export class MemStorage implements IStorage {
     const id = this.generateId();
     const newBudget: Budget = {
       id,
-      ...budget,
+      userId: budget.userId,
+      categoryId: budget.categoryId,
       amount: typeof budget.amount === 'string' ? parseFloat(budget.amount) : budget.amount,
+      period: budget.period,
+      startDate: budget.startDate,
+      endDate: budget.endDate,
       createdAt: new Date(),
       updatedAt: new Date()
     };
