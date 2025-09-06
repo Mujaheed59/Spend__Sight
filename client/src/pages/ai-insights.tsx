@@ -128,7 +128,7 @@ export default function AIInsightsPage() {
     }, {} as Record<string, number>);
 
     const topCategory = Object.entries(categoryTotals).reduce((max, [cat, amount]) => 
-      amount > max[1] ? [cat, amount] : max, ['', 0]);
+      amount > (max[1] as number) ? [cat, amount] : max, ['', 0] as [string, number]);
 
     // Predict monthly spend
     const daysRemaining = new Date(currentYear, currentMonth + 1, 0).getDate() - daysInMonth;
