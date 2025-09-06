@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -130,21 +130,37 @@ export function ExpenseForm({ open, onClose }: ExpenseFormProps) {
   // Auto-trigger AI categorization when both description and amount are present
   const watchDescription = form.watch('description');
   const watchAmount = form.watch('amount');
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Stable function to avoid useEffect dependency issues
+  const triggerAutoCategorization = useCallback((description: string, amount: number) => {
+    setIsAICategorizing(true);
+    categorizeMutation.mutate({ description, amount });
+  }, [categorizeMutation]);
   
   React.useEffect(() => {
+    // Clear existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
     const description = watchDescription?.trim();
     const amount = parseFloat(watchAmount || '0');
     
     // Auto-categorize if we have good description and amount, but no category selected yet
     if (description && description.length > 3 && amount > 0 && !form.getValues('categoryId') && !isAICategorizing) {
-      const timeoutId = setTimeout(() => {
-        setIsAICategorizing(true);
-        categorizeMutation.mutate({ description, amount });
+      timeoutRef.current = setTimeout(() => {
+        triggerAutoCategorization(description, amount);
       }, 1500); // Delay to avoid too many API calls while typing
-      
-      return () => clearTimeout(timeoutId);
     }
-  }, [watchDescription, watchAmount, isAICategorizing, form, categorizeMutation]);
+    
+    // Cleanup function
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [watchDescription, watchAmount, isAICategorizing, triggerAutoCategorization]);
 
   const onSubmit = (data: InsertExpense) => {
     createExpenseMutation.mutate(data);

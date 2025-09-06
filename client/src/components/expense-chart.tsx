@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -21,8 +21,9 @@ export function ExpenseChart() {
   const { toast } = useToast();
   const [period, setPeriod] = useState("30");
 
-  // Get date range based on period
-  const getDateRange = (days: number) => {
+  // Memoize date range calculation to prevent unnecessary API calls
+  const dateRange = useMemo(() => {
+    const days = parseInt(period);
     const endDate = new Date();
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
@@ -30,9 +31,7 @@ export function ExpenseChart() {
       startDate: startDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
     };
-  };
-
-  const dateRange = getDateRange(parseInt(period));
+  }, [period]);
 
   const { data: stats, isLoading } = useQuery({
     queryKey: ['/api/analytics/stats', dateRange],
@@ -62,23 +61,27 @@ export function ExpenseChart() {
     );
   }
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-IN', {
+  // Memoize currency formatter
+  const formatCurrency = useMemo(() => {
+    const formatter = new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
       minimumFractionDigits: 0,
-    }).format(value);
-  };
+    });
+    return (value: number) => formatter.format(value);
+  }, []);
 
-  // Prepare trend data
-  const trendData = (stats as any)?.dailyTrend || [];
-  
-  // Prepare category data for pie chart
-  const categoryData = (stats as any)?.categoryBreakdown?.map((cat: any) => ({
-    name: cat.categoryName,
-    value: cat.amount,
-    color: cat.color,
-  })) || [];
+  // Memoize chart data to prevent unnecessary re-renders
+  const { trendData, categoryData } = useMemo(() => {
+    const trendData = (stats as any)?.dailyTrend || [];
+    const categoryData = (stats as any)?.categoryBreakdown?.map((cat: any) => ({
+      name: cat.categoryName,
+      value: cat.amount,
+      color: cat.color,
+    })) || [];
+    
+    return { trendData, categoryData };
+  }, [stats]);
 
   return (
     <>
@@ -151,7 +154,7 @@ export function ExpenseChart() {
                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   >
                     {categoryData.map((entry: any, index: number) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
+                      <Cell key={`category-cell-${entry.name}-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
                   <Tooltip formatter={(value: number) => formatCurrency(value)} />
