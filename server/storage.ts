@@ -480,8 +480,15 @@ export class MongoStorage implements IStorage {
       }
       
       result.push({
-        ...expense,
         id: expense._id.toString(),
+        userId: expense.userId,
+        categoryId: expense.categoryId,
+        amount: expense.amount,
+        description: expense.description,
+        paymentMethod: expense.paymentMethod,
+        date: expense.date,
+        createdAt: expense.createdAt,
+        updatedAt: expense.updatedAt,
         category
       });
     }
@@ -505,8 +512,15 @@ export class MongoStorage implements IStorage {
       }
       
       result.push({
-        ...expense,
         id: expense._id.toString(),
+        userId: expense.userId,
+        categoryId: expense.categoryId,
+        amount: expense.amount,
+        description: expense.description,
+        paymentMethod: expense.paymentMethod,
+        date: expense.date,
+        createdAt: expense.createdAt,
+        updatedAt: expense.updatedAt,
         category
       });
     }

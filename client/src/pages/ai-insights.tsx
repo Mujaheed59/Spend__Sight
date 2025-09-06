@@ -127,8 +127,8 @@ export default function AIInsightsPage() {
       return acc;
     }, {} as Record<string, number>);
 
-    const topCategory = Object.entries(categoryTotals).reduce((max, [cat, amount]) => 
-      amount > (max[1] as number) ? [cat, amount] : max, ['', 0] as [string, number]);
+    const topCategory = Object.entries(categoryTotals).reduce((max: [string, number], [cat, amount]) => 
+      (amount as number) > max[1] ? [cat, amount as number] : max, ['', 0] as [string, number]);
 
     // Predict monthly spend
     const daysRemaining = new Date(currentYear, currentMonth + 1, 0).getDate() - daysInMonth;
@@ -138,7 +138,7 @@ export default function AIInsightsPage() {
       totalSpent,
       avgDailySpend,
       topCategory: topCategory[0],
-      topCategoryAmount: topCategory[1],
+      topCategoryAmount: topCategory[1] as number,
       monthOverMonth: 0, // Would need previous month data
       unusualTransactions: 0, // Would need more complex analysis
       predictedMonthlySpend
