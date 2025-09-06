@@ -33,8 +33,15 @@ export function ExpenseChart() {
     };
   }, [period]);
 
-  const { data: stats, isLoading } = useQuery({
+  const { data: stats, isLoading, error } = useQuery({
     queryKey: ['/api/analytics/stats', dateRange],
+    queryFn: async () => {
+      const response = await fetch('/api/analytics/stats');
+      if (!response.ok) {
+        throw new Error('Failed to fetch stats');
+      }
+      return response.json();
+    },
     retry: false,
   });
 
