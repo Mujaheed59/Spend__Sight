@@ -99,11 +99,9 @@ export default function Dashboard() {
               </SheetContent>
             </Sheet>
             <div className="flex items-center space-x-2">
-              <img 
-                src="/@assets/{84372BD1-1A6B-4728-9D4E-AD72EB2908F6}_1757179515574.png" 
-                alt="SpendSight Logo" 
-                className="w-6 h-6 rounded"
-              />
+              <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+                <span className="text-white font-semibold text-sm">E</span>
+              </div>
               <span className="text-lg font-semibold">SpendSight</span>
             </div>
           </div>

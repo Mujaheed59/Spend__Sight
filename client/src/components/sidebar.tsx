@@ -47,11 +47,9 @@ export function Sidebar({ onNavigate }: SidebarProps) {
       <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
         {/* Logo */}
         <div className="flex items-center flex-shrink-0 px-4">
-          <img 
-            src="/@assets/{84372BD1-1A6B-4728-9D4E-AD72EB2908F6}_1757179515574.png" 
-            alt="SpendSight Logo" 
-            className="w-8 h-8 rounded-lg"
-          />
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+            <span className="text-white font-bold text-lg">E</span>
+          </div>
           <span className="ml-2 text-xl font-semibold text-gray-900">SpendSight</span>
         </div>
 

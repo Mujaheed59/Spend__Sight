@@ -13,11 +13,9 @@ export default function Landing() {
       <header className="border-b bg-white/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <img 
-              src="/@assets/{84372BD1-1A6B-4728-9D4E-AD72EB2908F6}_1757179515574.png" 
-              alt="SpendSight Logo" 
-              className="w-8 h-8 rounded-lg"
-            />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+              <span className="text-white font-bold text-lg">E</span>
+            </div>
             <span className="text-xl font-semibold text-gray-900">SpendSight</span>
           </div>
           <Button onClick={handleLogin} className="bg-primary hover:bg-primary/90" data-testid="button-login">
@@ -136,11 +134,9 @@ export default function Landing() {
       <footer className="py-8 px-4 bg-gray-900 text-white">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <img 
-              src="/@assets/{84372BD1-1A6B-4728-9D4E-AD72EB2908F6}_1757179515574.png" 
-              alt="SpendSight Logo" 
-              className="w-6 h-6 rounded"
-            />
+            <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+              <span className="text-white font-semibold text-sm">E</span>
+            </div>
             <span className="text-lg font-semibold">SpendSight</span>
           </div>
           <p className="text-gray-400">
