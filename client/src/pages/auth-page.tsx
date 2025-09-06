@@ -93,7 +93,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100" data-testid="page-auth">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-100" data-testid="page-auth">
       <div className="flex flex-col lg:flex-row min-h-screen">
         {/* Hero Section */}
         <div className="lg:flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-20 xl:px-24">

@@ -14,15 +14,15 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {
-          DEFAULT: "#2563eb",
+          DEFAULT: "hsl(24, 95%, 53%)",
           foreground: "var(--primary-foreground)",
         },
         secondary: {
-          DEFAULT: "#10b981",
+          DEFAULT: "hsl(33, 100%, 85%)",
           foreground: "var(--secondary-foreground)",
         },
         accent: {
-          DEFAULT: "#f59e0b",
+          DEFAULT: "hsl(45, 93%, 68%)",
           foreground: "var(--accent-foreground)",
         },
         error: {

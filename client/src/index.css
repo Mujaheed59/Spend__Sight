@@ -4,39 +4,39 @@
 @tailwind utilities;
 
 :root {
-  /* Light Finance Theme Colors */
-  --background: hsl(120, 25%, 98%);  /* Very light mint green */
-  --foreground: hsl(210, 20%, 15%);  /* Dark navy for text */
+  /* Light Orange Finance Theme Colors */
+  --background: hsl(33, 100%, 98%);  /* Very light orange */
+  --foreground: hsl(220, 20%, 15%);  /* Dark navy for text */
   --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(210, 20%, 15%);
+  --card-foreground: hsl(220, 20%, 15%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(210, 20%, 15%);
-  --primary: hsl(142, 76%, 36%);     /* Professional green */
+  --popover-foreground: hsl(220, 20%, 15%);
+  --primary: hsl(24, 95%, 53%);      /* Vibrant orange */
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(197, 71%, 52%);   /* Light blue */
-  --secondary-foreground: hsl(0, 0%, 100%);
-  --muted: hsl(120, 25%, 95%);       /* Very light green tint */
-  --muted-foreground: hsl(210, 15%, 45%);
-  --accent: hsl(45, 93%, 68%);       /* Soft gold */
-  --accent-foreground: hsl(210, 20%, 15%);
+  --secondary: hsl(33, 100%, 85%);   /* Light orange */
+  --secondary-foreground: hsl(220, 20%, 15%);
+  --muted: hsl(33, 50%, 95%);        /* Very light orange tint */
+  --muted-foreground: hsl(220, 15%, 45%);
+  --accent: hsl(45, 93%, 68%);       /* Complementary yellow */
+  --accent-foreground: hsl(220, 20%, 15%);
   --destructive: hsl(0, 75%, 55%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(120, 15%, 88%);      /* Light green border */
-  --input: hsl(120, 15%, 88%);
-  --ring: hsl(142, 76%, 36%);
-  --chart-1: hsl(142, 76%, 36%);     /* Green */
-  --chart-2: hsl(197, 71%, 52%);     /* Blue */
-  --chart-3: hsl(45, 93%, 68%);      /* Gold */
-  --chart-4: hsl(158, 64%, 52%);     /* Teal */
-  --chart-5: hsl(31, 81%, 62%);      /* Orange */
+  --border: hsl(33, 30%, 88%);       /* Light orange border */
+  --input: hsl(33, 30%, 88%);
+  --ring: hsl(24, 95%, 53%);
+  --chart-1: hsl(24, 95%, 53%);      /* Orange */
+  --chart-2: hsl(33, 100%, 65%);     /* Light Orange */
+  --chart-3: hsl(45, 93%, 68%);      /* Yellow */
+  --chart-4: hsl(200, 71%, 52%);     /* Blue accent */
+  --chart-5: hsl(280, 65%, 60%);     /* Purple accent */
   --sidebar: hsl(0, 0%, 100%);
-  --sidebar-foreground: hsl(210, 20%, 15%);
-  --sidebar-primary: hsl(142, 76%, 36%);
+  --sidebar-foreground: hsl(220, 20%, 15%);
+  --sidebar-primary: hsl(24, 95%, 53%);
   --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-accent: hsl(120, 25%, 95%);
-  --sidebar-accent-foreground: hsl(142, 76%, 36%);
-  --sidebar-border: hsl(120, 15%, 88%);
-  --sidebar-ring: hsl(142, 76%, 36%);
+  --sidebar-accent: hsl(33, 50%, 95%);
+  --sidebar-accent-foreground: hsl(24, 95%, 53%);
+  --sidebar-border: hsl(33, 30%, 88%);
+  --sidebar-ring: hsl(24, 95%, 53%);
   --font-sans: 'Inter', sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: 'Fira Code', monospace;

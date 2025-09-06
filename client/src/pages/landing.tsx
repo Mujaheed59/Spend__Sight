@@ -8,7 +8,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-background via-orange-50 to-yellow-50">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -114,7 +114,7 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-primary text-white">
+      <section className="py-16 px-4 bg-gradient-to-r from-primary to-orange-600 text-white">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Take Control of Your Finances?</h2>
           <p className="text-xl mb-8 text-blue-100">
