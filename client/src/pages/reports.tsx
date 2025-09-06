@@ -103,8 +103,8 @@ export default function ReportsPage() {
 
     const categoryData = Object.entries(categoryBreakdown).map(([name, value]) => ({
       name,
-      value,
-      percentage: totalAmount > 0 ? ((value / totalAmount) * 100).toFixed(1) : "0"
+      value: Number(value),
+      percentage: totalAmount > 0 ? ((Number(value) / totalAmount) * 100).toFixed(1) : "0"
     }));
 
     // Daily spending trend

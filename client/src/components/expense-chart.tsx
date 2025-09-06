@@ -32,7 +32,11 @@ export function ExpenseChart() {
   const { data: stats, isLoading, error } = useQuery({
     queryKey: ['/api/analytics/stats', dateRange],
     queryFn: async () => {
-      const response = await fetch('/api/analytics/stats');
+      const params = new URLSearchParams({
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate
+      });
+      const response = await fetch(`/api/analytics/stats?${params}`);
       if (!response.ok) {
         throw new Error('Failed to fetch stats');
       }

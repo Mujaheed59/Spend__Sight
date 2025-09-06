@@ -24,7 +24,6 @@ export function useWebSocket() {
       wsRef.current = ws;
 
       ws.onopen = () => {
-        console.log('🔗 WebSocket connected');
         setIsConnected(true);
         
         // Clear any existing reconnect timeout
@@ -42,11 +41,9 @@ export function useWebSocket() {
           // Handle different message types
           switch (message.type) {
             case 'connection':
-              console.log('✅ WebSocket connection confirmed');
               break;
               
             case 'expense_update':
-              console.log('💰 Expense update received:', message.data);
               // Invalidate relevant queries to refresh data
               queryClient.invalidateQueries({ queryKey: ['/api/expenses'] });
               queryClient.invalidateQueries({ queryKey: ['/api/analytics/stats'] });
@@ -58,7 +55,6 @@ export function useWebSocket() {
               break;
               
             case 'insights_update':
-              console.log('🧠 Insights update received:', message.data);
               queryClient.invalidateQueries({ queryKey: ['/api/insights'] });
               
               toast({
@@ -68,40 +64,33 @@ export function useWebSocket() {
               break;
               
             case 'analytics_update':
-              console.log('📊 Analytics update received:', message.data);
               queryClient.invalidateQueries({ queryKey: ['/api/analytics/stats'] });
               break;
               
             case 'pong':
-              console.log('🏓 WebSocket ping-pong successful');
               break;
               
             default:
-              console.log('📨 Unknown message type:', message.type);
           }
         } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
+          // Silently handle parsing errors
         }
       };
 
       ws.onclose = () => {
-        console.log('🔌 WebSocket disconnected');
         setIsConnected(false);
         
         // Attempt to reconnect after 3 seconds
         reconnectTimeoutRef.current = setTimeout(() => {
-          console.log('🔄 Attempting to reconnect WebSocket...');
           connect();
         }, 3000);
       };
 
       ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
         setIsConnected(false);
       };
 
     } catch (error) {
-      console.error('Failed to create WebSocket connection:', error);
       setIsConnected(false);
     }
   };
@@ -124,7 +113,6 @@ export function useWebSocket() {
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify(message));
     } else {
-      console.warn('WebSocket not connected, cannot send message');
     }
   };
 
