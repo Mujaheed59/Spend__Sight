@@ -19,7 +19,7 @@ export function setupWebSocket(server: Server) {
     // Send welcome message
     const welcomeMessage: WebSocketMessage = {
       type: 'connection',
-      data: { message: 'Connected to ExpenseAI real-time updates' },
+      data: { message: 'Connected to SpendSight real-time updates' },
       timestamp: Date.now()
     };
     

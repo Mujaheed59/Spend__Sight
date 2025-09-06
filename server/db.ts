@@ -8,8 +8,8 @@ const connectDB = async () => {
     const mongoURIs = [
       process.env.MONGODB_URI,
       process.env.DATABASE_URL?.startsWith('mongodb') ? process.env.DATABASE_URL : undefined,
-      'mongodb://127.0.0.1:27017/expenseai',
-      'mongodb://localhost:27017/expenseai'
+      'mongodb://127.0.0.1:27017/spendsight',
+      'mongodb://localhost:27017/spendsight'
     ].filter(Boolean);
     
     let connected = false;
@@ -24,7 +24,7 @@ const connectDB = async () => {
           connectTimeoutMS: 10000,
         });
         console.log('✅ MongoDB connected successfully to:', mongoURI);
-        console.log('📊 Database: expenseai');
+        console.log('📊 Database: spendsight');
         connected = true;
         break;
       } catch (err) {

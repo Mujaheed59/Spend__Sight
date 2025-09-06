@@ -106,11 +106,11 @@ export default function Dashboard() {
             </Sheet>
             <div className="flex items-center space-x-2">
               <img 
-                src="/@assets/generated_images/ExpenseAI_fintech_app_logo_91bcee83.png" 
-                alt="ExpenseAI Logo" 
+                src="/@assets/generated_images/SpendSight_finance_tracker_logo_f7c8de5f.png" 
+                alt="SpendSight Logo" 
                 className="w-6 h-6 rounded"
               />
-              <span className="text-lg font-semibold">ExpenseAI</span>
+              <span className="text-lg font-semibold">SpendSight</span>
             </div>
           </div>
         </div>
