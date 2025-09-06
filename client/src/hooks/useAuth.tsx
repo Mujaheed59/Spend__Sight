@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       toast({
         title: "Welcome!",
-        description: "Account created successfully. Welcome to SpendSight!"
+        description: "Account created successfully. Welcome to SpendSight!",
         variant: "default",
       });
     },
