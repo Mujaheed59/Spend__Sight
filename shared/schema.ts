@@ -110,6 +110,20 @@ export const insertUserSchema = z.object({
   profileImageUrl: z.string().optional(),
 });
 
+// User profile interface
+export interface UserProfile {
+  id: string;
+  monthlyIncome: number;
+  currency: string;
+  timezone: string;
+}
+
+export const insertUserProfileSchema = z.object({
+  monthlyIncome: z.number().min(0, "Monthly income must be positive"),
+  currency: z.string().min(1, "Currency is required"),
+  timezone: z.string().min(1, "Timezone is required"),
+});
+
 // TypeScript types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type UpsertUser = Partial<User>;
@@ -117,3 +131,4 @@ export type InsertExpense = z.infer<typeof insertExpenseSchema>;
 export type InsertCategory = z.infer<typeof insertCategorySchema>;
 export type InsertInsight = z.infer<typeof insertInsightSchema>;
 export type InsertBudget = z.infer<typeof insertBudgetSchema>;
+export type InsertUserProfile = z.infer<typeof insertUserProfileSchema>;

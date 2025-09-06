@@ -101,9 +101,28 @@ const budgetSchema = new mongoose.Schema({
   }
 });
 
+// UserProfile Schema
+const userProfileSchema = new mongoose.Schema({
+  userId: { type: String, required: true, unique: true, index: true },
+  monthlyIncome: { type: Number, required: true },
+  currency: { type: String, required: true },
+  timezone: { type: String, required: true },
+}, {
+  timestamps: true,
+  toJSON: { 
+    transform: function(doc: any, ret: any) {
+      ret.id = ret._id.toString();
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+    }
+  }
+});
+
 // Export models
 export const UserModel = mongoose.model('User', userSchema);
 export const CategoryModel = mongoose.model('Category', categorySchema);
 export const ExpenseModel = mongoose.model('Expense', expenseSchema);
 export const InsightModel = mongoose.model('Insight', insightSchema);
 export const BudgetModel = mongoose.model('Budget', budgetSchema);
+export const UserProfileModel = mongoose.model('UserProfile', userProfileSchema);

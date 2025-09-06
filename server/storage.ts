@@ -11,8 +11,10 @@ import {
   type InsertInsight,
   type Budget,
   type InsertBudget,
+  type UserProfile,
+  type InsertUserProfile,
 } from "@shared/schema";
-import { UserModel, CategoryModel, ExpenseModel, InsightModel, BudgetModel } from "./models";
+import { UserModel, CategoryModel, ExpenseModel, InsightModel, BudgetModel, UserProfileModel } from "./models";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import MemoryStore from "memorystore";
@@ -53,6 +55,10 @@ export interface IStorage {
   // Enhanced category operations
   deleteCategory(id: string): Promise<void>;
   
+  // User profile operations
+  getUserProfile(userId: string): Promise<UserProfile | undefined>;
+  updateUserProfile(userId: string, profile: Partial<InsertUserProfile & { id?: string }>): Promise<UserProfile>;
+  
   // Analytics
   getExpenseStats(userId: string, startDate: string, endDate: string): Promise<{
     totalSpent: number;
@@ -70,6 +76,7 @@ export class MemStorage implements IStorage {
   private expenses: Map<string, Expense> = new Map();
   private insights: Map<string, Insight> = new Map();
   private budgets: Map<string, Budget> = new Map();
+  private userProfiles: Map<string, UserProfile> = new Map();
   sessionStore: session.Store;
 
   constructor() {
@@ -335,6 +342,23 @@ export class MemStorage implements IStorage {
       categoryBreakdown,
       dailyTrend
     };
+  }
+
+  // User profile operations
+  async getUserProfile(userId: string): Promise<UserProfile | undefined> {
+    return this.userProfiles.get(userId);
+  }
+
+  async updateUserProfile(userId: string, profile: Partial<InsertUserProfile & { id?: string }>): Promise<UserProfile> {
+    const existingProfile = this.userProfiles.get(userId);
+    const updatedProfile: UserProfile = {
+      id: userId,
+      monthlyIncome: profile.monthlyIncome || existingProfile?.monthlyIncome || 50000,
+      currency: profile.currency || existingProfile?.currency || 'INR',
+      timezone: profile.timezone || existingProfile?.timezone || 'Asia/Kolkata'
+    };
+    this.userProfiles.set(userId, updatedProfile);
+    return updatedProfile;
   }
 }
 
@@ -724,6 +748,44 @@ export class MongoStorage implements IStorage {
       totalSpent,
       categoryBreakdown,
       dailyTrend,
+    };
+  }
+
+  // User profile operations
+  async getUserProfile(userId: string): Promise<UserProfile | undefined> {
+    try {
+      const profile = await UserProfileModel.findOne({ userId }).lean();
+      return profile ? {
+        id: profile._id.toString(),
+        monthlyIncome: profile.monthlyIncome,
+        currency: profile.currency,
+        timezone: profile.timezone
+      } : undefined;
+    } catch (error) {
+      console.error('Error getting user profile:', error);
+      return undefined;
+    }
+  }
+
+  async updateUserProfile(userId: string, profile: Partial<InsertUserProfile & { id?: string }>): Promise<UserProfile> {
+    const profileData = {
+      userId,
+      monthlyIncome: profile.monthlyIncome || 50000,
+      currency: profile.currency || 'INR',
+      timezone: profile.timezone || 'Asia/Kolkata'
+    };
+
+    const updatedProfile = await UserProfileModel.findOneAndUpdate(
+      { userId },
+      profileData,
+      { upsert: true, new: true }
+    );
+
+    return {
+      id: updatedProfile._id.toString(),
+      monthlyIncome: updatedProfile.monthlyIncome,
+      currency: updatedProfile.currency,
+      timezone: updatedProfile.timezone
     };
   }
 }
