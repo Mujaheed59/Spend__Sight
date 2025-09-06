@@ -13,10 +13,9 @@ import { RecentExpenses } from "@/components/recent-expenses";
 import { ExpenseForm } from "@/components/expense-form";
 import { BudgetSettings } from "@/components/budget-settings";
 import { CategoriesManager } from "@/components/categories-manager";
-import { ReportsExport } from "@/components/reports-export";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { Button } from "@/components/ui/button";
-import { Plus, Download, Menu } from "lucide-react";
+import { Plus, Menu } from "lucide-react";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -27,7 +26,6 @@ export default function Dashboard() {
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [showBudgetSettings, setShowBudgetSettings] = useState(false);
   const [showCategoriesManager, setShowCategoriesManager] = useState(false);
-  const [showReportsExport, setShowReportsExport] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Redirect to home if not authenticated
@@ -53,9 +51,6 @@ export default function Dashboard() {
     );
   }
 
-  const handleExport = () => {
-    setShowReportsExport(true);
-  };
 
   const handleSidebarNavigate = (action: string) => {
     switch (action) {
@@ -67,9 +62,6 @@ export default function Dashboard() {
         break;
       case 'budget-settings':
         setShowBudgetSettings(true);
-        break;
-      case 'export-reports':
-        setShowReportsExport(true);
         break;
       case 'generate-insights':
         // This will be handled by the AIInsights component
@@ -145,14 +137,6 @@ export default function Dashboard() {
                 </div>
                 <div className="mt-4 flex md:mt-0 md:ml-4 space-x-3">
                   <Button 
-                    variant="outline" 
-                    onClick={handleExport}
-                    data-testid="button-export"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Export
-                  </Button>
-                  <Button 
                     onClick={() => setShowExpenseForm(true)}
                     data-testid="button-add-expense"
                   >
@@ -214,12 +198,6 @@ export default function Dashboard() {
         />
       )}
       
-      {showReportsExport && (
-        <ReportsExport 
-          open={showReportsExport} 
-          onClose={() => setShowReportsExport(false)} 
-        />
-      )}
     </div>
   );
 }

@@ -23,20 +23,14 @@ import {
   Legend
 } from "recharts";
 import { 
-  Download, 
   FileText, 
   Calendar, 
   Filter,
   TrendingUp,
   DollarSign,
   PieChart as PieChartIcon,
-  BarChart3,
-  Printer,
-  Mail,
-  RefreshCw
+  BarChart3
 } from "lucide-react";
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
 interface ReportFilters {
   startDate: string;
@@ -56,7 +50,6 @@ export default function ReportsPage() {
     maxAmount: ''
   });
   const [reportType, setReportType] = useState('summary');
-  const [isExporting, setIsExporting] = useState(false);
 
   const { data: expenses, isLoading: expensesLoading } = useQuery({
     queryKey: ['/api/expenses'],
@@ -103,14 +96,15 @@ export default function ReportsPage() {
     // Category breakdown
     const categoryBreakdown = filteredExpenses.reduce((acc, expense) => {
       const category = expense.categoryName || 'Other';
-      acc[category] = (acc[category] || 0) + parseFloat(expense.amount);
+      const amount = parseFloat(expense.amount);
+      acc[category] = (acc[category] || 0) + (isNaN(amount) ? 0 : amount);
       return acc;
     }, {} as Record<string, number>);
 
     const categoryData = Object.entries(categoryBreakdown).map(([name, value]) => ({
       name,
       value,
-      percentage: ((value / totalAmount) * 100).toFixed(1)
+      percentage: totalAmount > 0 ? ((value / totalAmount) * 100).toFixed(1) : "0"
     }));
 
     // Daily spending trend
@@ -150,68 +144,7 @@ export default function ReportsPage() {
     }).format(amount);
   };
 
-  const exportToPDF = useCallback(async () => {
-    setIsExporting(true);
-    try {
-      const element = document.getElementById('report-content');
-      if (!element) return;
 
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        allowTaint: true,
-        useCORS: true
-      });
-      
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgWidth = 210;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save(`SpendSight-Report-${new Date().toISOString().split('T')[0]}.pdf`);
-      
-      toast({
-        title: "Report Exported",
-        description: "Your financial report has been downloaded as PDF.",
-      });
-    } catch (error) {
-      toast({
-        title: "Export Failed",
-        description: "Could not export report. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsExporting(false);
-    }
-  }, [toast]);
-
-  const exportToCSV = useCallback(() => {
-    const csvData = filteredExpenses.map(expense => ({
-      Date: new Date(expense.date).toLocaleDateString('en-IN'),
-      Description: expense.description,
-      Category: expense.categoryName || 'Other',
-      Amount: parseFloat(expense.amount),
-    }));
-
-    const headers = Object.keys(csvData[0] || {});
-    const csvContent = [
-      headers.join(','),
-      ...csvData.map(row => headers.map(header => row[header as keyof typeof row]).join(','))
-    ].join('\\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `SpendSight-Data-${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-
-    toast({
-      title: "Data Exported",
-      description: "Your expense data has been downloaded as CSV.",
-    });
-  }, [filteredExpenses, toast]);
 
   const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'];
 
@@ -245,29 +178,6 @@ export default function ReportsPage() {
             <p className="text-gray-600 mt-2 text-sm md:text-base">
               Comprehensive analysis of your spending patterns and financial health
             </p>
-          </div>
-          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-            <Button 
-              onClick={exportToCSV}
-              variant="outline"
-              disabled={isExporting || filteredExpenses.length === 0}
-              className="w-full sm:w-auto"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Export CSV
-            </Button>
-            <Button 
-              onClick={exportToPDF}
-              disabled={isExporting || filteredExpenses.length === 0}
-              className="w-full sm:w-auto"
-            >
-              {isExporting ? (
-                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-              ) : (
-                <Printer className="h-4 w-4 mr-2" />
-              )}
-              {isExporting ? 'Exporting...' : 'Export PDF'}
-            </Button>
           </div>
         </div>
 
@@ -393,7 +303,7 @@ export default function ReportsPage() {
                     </p>
                     {reportData.topCategory && (
                       <p className="text-xs text-orange-200">
-                        {formatCurrency(reportData.topCategory.value)}
+                        {formatCurrency(Number(reportData.topCategory.value))}
                       </p>
                     )}
                   </div>
