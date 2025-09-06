@@ -45,6 +45,28 @@ export function ExpenseChart() {
     retry: false,
   });
 
+  // Memoize currency formatter - MOVED BEFORE EARLY RETURNS
+  const formatCurrency = useMemo(() => {
+    const formatter = new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+    });
+    return (value: number) => formatter.format(value);
+  }, []);
+
+  // Memoize chart data to prevent unnecessary re-renders - MOVED BEFORE EARLY RETURNS
+  const { trendData, categoryData } = useMemo(() => {
+    const trendData = (stats as any)?.dailyTrend || [];
+    const categoryData = (stats as any)?.categoryBreakdown?.map((cat: any) => ({
+      name: cat.categoryName,
+      value: cat.amount,
+      color: cat.color,
+    })) || [];
+    
+    return { trendData, categoryData };
+  }, [stats]);
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -67,28 +89,6 @@ export function ExpenseChart() {
       </div>
     );
   }
-
-  // Memoize currency formatter
-  const formatCurrency = useMemo(() => {
-    const formatter = new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 0,
-    });
-    return (value: number) => formatter.format(value);
-  }, []);
-
-  // Memoize chart data to prevent unnecessary re-renders
-  const { trendData, categoryData } = useMemo(() => {
-    const trendData = (stats as any)?.dailyTrend || [];
-    const categoryData = (stats as any)?.categoryBreakdown?.map((cat: any) => ({
-      name: cat.categoryName,
-      value: cat.amount,
-      color: cat.color,
-    })) || [];
-    
-    return { trendData, categoryData };
-  }, [stats]);
 
   return (
     <>

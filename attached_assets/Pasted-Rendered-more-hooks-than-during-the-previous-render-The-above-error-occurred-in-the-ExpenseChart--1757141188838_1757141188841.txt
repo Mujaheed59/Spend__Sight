@@ -1,0 +1,34 @@
+Rendered more hooks than during the previous render.
+The above error occurred in the <ExpenseChart> component:
+
+    at ExpenseChart (https://03ace7c9-3de1-4ee0-bd1f-cae0b2615571-00-2chsmfkp1jw3i.janeway.replit.dev/src/components/expense-chart.tsx:37:21)
+    at div
+    at div
+    at div
+    at main
+    at div
+    at div
+    at Dashboard (https://03ace7c9-3de1-4ee0-bd1f-cae0b2615571-00-2chsmfkp1jw3i.janeway.replit.dev/src/pages/dashboard.tsx:38:21)
+    at Route (https://03ace7c9-3de1-4ee0-bd1f-cae0b2615571-00-2chsmfkp1jw3i.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ee2347fd:323:16)
+    at Switch (https://03ace7c9-3de1-4ee0-bd1f-cae0b2615571-00-2chsmfkp1jw3i.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ee2347fd:379:17)
+    at Router (https://03ace7c9-3de1-4ee0-bd1f-cae0b2615571-00-2chsmfkp1jw3i.janeway.replit.dev/src/App.tsx?v=E5hEfjLoeVOSvZDmfhPLn:30:48)
+    at Provider (https://03ace7c9-3de1-4ee0-bd1f-cae0b2615571-00-2chsmfkp1jw3i.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WCRF4H6A.js?v=ee2347fd:58:15)
+    at TooltipProvider (https://03ace7c9-3de1-4ee0-bd1f-cae0b2615571-00-2chsmfkp1jw3i.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=ee2347fd:56:5)
+    at AuthProvider (https://03ace7c9-3de1-4ee0-bd1f-cae0b2615571-00-2chsmfkp1jw3i.janeway.replit.dev/src/hooks/useAuth.tsx:26:32)
+    at QueryClientProvider (https://03ace7c9-3de1-4ee0-bd1f-cae0b2615571-00-2chsmfkp1jw3i.janeway.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=ee2347fd:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+Rendered more hooks than during the previous render.
+[vite] 
+TypeError {}
+
+[vite] 
+TypeError {}
+
+[vite] 
+TypeError {}
+
+WebSocket error: 
+Event {isTrusted: true}
