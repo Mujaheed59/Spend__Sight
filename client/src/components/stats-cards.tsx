@@ -32,21 +32,8 @@ export function StatsCards() {
     retry: false,
   });
 
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {[...Array(4)].map((_, i) => (
-          <Card key={`skeleton-card-${i}`} className="animate-pulse">
-            <CardContent className="p-5">
-              <div className="h-20 bg-gray-200 rounded"></div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    );
-  }
-
   // Memoize expensive calculations to prevent unnecessary re-computations
+  // This must be before any conditional returns to maintain hooks order
   const { totalSpent, categoriesUsed, topCategory, unreadInsights, budgetInfo } = useMemo(() => {
     const totalSpent = (stats as any)?.totalSpent || 0;
     const categoriesUsed = (stats as any)?.categoryBreakdown?.length || 0;
@@ -86,6 +73,20 @@ export function StatsCards() {
     });
     return (amount: number) => formatter.format(amount);
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
+          <Card key={`skeleton-card-${i}`} className="animate-pulse">
+            <CardContent className="p-5">
+              <div className="h-20 bg-gray-200 rounded"></div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

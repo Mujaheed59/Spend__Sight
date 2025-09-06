@@ -86,7 +86,7 @@ export function PDFExport({ onClose }: PDFExportProps) {
         <div style="margin-bottom: 30px;">
           <h2 style="color: #333; border-bottom: 2px solid #6366f1; padding-bottom: 5px;">AI Insights</h2>
           <div style="margin-top: 15px;">
-            ${insights.slice(0, 3).map((insight: any, index: number) => `
+            ${(insights as any[]).slice(0, 3).map((insight: any, index: number) => `
               <div style="background: ${insight.type === 'alert' ? '#fef2f2' : insight.type === 'warning' ? '#fffbeb' : insight.type === 'goal' ? '#f0fdf4' : '#f8fafc'}; 
                           border-left: 4px solid ${insight.type === 'alert' ? '#ef4444' : insight.type === 'warning' ? '#f59e0b' : insight.type === 'goal' ? '#10b981' : '#6366f1'}; 
                           padding: 15px; margin-bottom: 15px; border-radius: 0 8px 8px 0;">
@@ -109,7 +109,7 @@ export function PDFExport({ onClose }: PDFExportProps) {
               </tr>
             </thead>
             <tbody>
-              ${expenses.slice(0, 10).map((expense: any) => `
+              ${(expenses as any[]).slice(0, 10).map((expense: any) => `
                 <tr>
                   <td style="padding: 10px; border: 1px solid #e5e7eb;">${new Date(expense.date).toLocaleDateString()}</td>
                   <td style="padding: 10px; border: 1px solid #e5e7eb;">${expense.description}</td>
