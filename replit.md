@@ -42,6 +42,23 @@ Preferred communication style: Simple, everyday language.
 - **Smart Insights**: Personalized budgeting recommendations and spending analysis
 - **Natural Language Processing**: Context-aware expense description analysis for better categorization
 
+# Recent Changes (January 6, 2025)
+
+## TypeScript Error Fixes
+Fixed critical TypeScript compilation errors in the storage layer:
+
+1. **MemStorage Type Safety**: Fixed object creation in MemStorage class by explicitly assigning all required properties instead of using spread operator, ensuring compatibility with interface definitions for Category, Expense, Insight, and Budget entities.
+
+2. **MongoDB Type Conversion**: Resolved ObjectId to string conversion issues in MongoStorage class by explicitly mapping MongoDB document properties to proper TypeScript types instead of using spread operator, preventing _id field type conflicts.
+
+3. **User Profile Support**: Added complete UserProfile interface and schema support with getUserProfile and updateUserProfile methods in both storage implementations, including proper MongoDB model definition and type-safe operations.
+
+4. **AI Insights Type Fix**: Fixed unknown type error in ai-insights.tsx by adding proper type assertions for array reduce operations with tuple types.
+
+5. **Interface Completeness**: Updated IStorage interface to include all required methods (getUserProfile, updateUserProfile) that were being called in routes but not defined in the interface.
+
+All TypeScript errors have been resolved except for two unused files (db-test.ts and schema.ts) that reference external dependencies not installed in the project.
+
 # External Dependencies
 
 ## Core Services
