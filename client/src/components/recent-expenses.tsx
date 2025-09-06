@@ -5,8 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
+import { useMemo } from "react";
 
-const getCategoryIcon = (categoryName: string) => {
+// Memoized category helper functions to prevent recreation on every render
+const getCategoryIcon = (categoryName: string): string => {
   const name = categoryName?.toLowerCase() || '';
   if (name.includes('food') || name.includes('dining')) return '🍽️';
   if (name.includes('transport')) return '🚗';
@@ -19,7 +21,7 @@ const getCategoryIcon = (categoryName: string) => {
   return '💰';
 };
 
-const getCategoryColor = (categoryName: string) => {
+const getCategoryColor = (categoryName: string): string => {
   const name = categoryName?.toLowerCase() || '';
   if (name.includes('food') || name.includes('dining')) return 'bg-red-100 text-red-800';
   if (name.includes('transport')) return 'bg-blue-100 text-blue-800';
@@ -40,24 +42,27 @@ export function RecentExpenses() {
     retry: false,
   });
 
-  const formatCurrency = (amount: string) => {
-    return new Intl.NumberFormat('en-IN', {
+  // Memoize formatters to prevent recreation on every render
+  const { formatCurrency, formatPaymentMethod } = useMemo(() => {
+    const currencyFormatter = new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
       minimumFractionDigits: 0,
-    }).format(parseFloat(amount));
-  };
-
-  const formatPaymentMethod = (method: string) => {
-    const methods: Record<string, string> = {
+    });
+    
+    const paymentMethods: Record<string, string> = {
       cash: 'Cash',
       credit_card: 'Credit Card',
       debit_card: 'Debit Card',
       upi: 'UPI',
       bank_transfer: 'Bank Transfer',
     };
-    return methods[method] || method;
-  };
+    
+    return {
+      formatCurrency: (amount: string) => currencyFormatter.format(parseFloat(amount)),
+      formatPaymentMethod: (method: string) => paymentMethods[method] || method
+    };
+  }, []);
 
   if (isLoading) {
     return (
@@ -68,8 +73,8 @@ export function RecentExpenses() {
         <CardContent>
           <div className="divide-y divide-gray-200">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="py-4">
-                <div className="h-16 bg-gray-200 rounded"></div>
+              <div key={`expense-skeleton-${i}`} className="py-4">
+                <div className="h-16 bg-gray-200 rounded" aria-label="Loading expense item"></div>
               </div>
             ))}
           </div>
@@ -88,15 +93,20 @@ export function RecentExpenses() {
       </CardHeader>
       <CardContent className="p-0">
         {(expenses as any) && (expenses as any).length > 0 ? (
-          <div className="divide-y divide-gray-200" data-testid="expenses-list">
+          <div className="divide-y divide-gray-200" data-testid="expenses-list" role="list" aria-label="Recent expenses list">
             {(expenses as any).map((expense: any) => (
               <div 
-                key={expense.id} 
+                key={`expense-${expense.id}`} 
                 className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
                 data-testid={`expense-item-${expense.id}`}
+                role="listitem"
+                aria-label={`Expense: ${expense.description}, Amount: ${formatCurrency(expense.amount)}`}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg">
+                  <div 
+                    className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg"
+                    aria-label={`Category: ${expense.category?.name || 'Uncategorized'}`}
+                  >
                     {getCategoryIcon(expense.category?.name)}
                   </div>
                   <div>

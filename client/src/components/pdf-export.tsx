@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, FileText, Loader2 } from 'lucide-react';
@@ -47,10 +47,10 @@ export function PDFExport({ onClose }: PDFExportProps) {
 
       reportElement.innerHTML = `
         <div style="text-align: center; margin-bottom: 30px;">
-          <img src="/@assets/generated_images/ExpenseAI_fintech_app_logo_91bcee83.png" 
-               alt="ExpenseAI Logo" 
-               style="width: 40px; height: 40px; margin-bottom: 10px;">
-          <h1 style="color: #6366f1; margin: 10px 0;">ExpenseAI Financial Report</h1>
+          <img src="/@assets/generated_images/SpendSight_finance_tracker_logo_f7c8de5f.png" 
+               alt="SpendSight Logo" 
+               style="width: 50px; height: 50px; margin-bottom: 10px;">
+          <h1 style="color: #2563eb; margin: 10px 0;">SpendSight Financial Report</h1>
           <p style="color: #666; margin: 0;">Generated on ${currentDate}</p>
         </div>
 
@@ -59,11 +59,11 @@ export function PDFExport({ onClose }: PDFExportProps) {
           <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 15px;">
             <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
               <h3 style="margin: 0 0 5px 0; color: #333;">Total Spent</h3>
-              <p style="font-size: 24px; font-weight: bold; color: #ef4444; margin: 0;">₹${analytics?.totalSpent || 0}</p>
+              <p style="font-size: 24px; font-weight: bold; color: #ef4444; margin: 0;">₹${(analytics as any)?.totalSpent || 0}</p>
             </div>
             <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
               <h3 style="margin: 0 0 5px 0; color: #333;">Total Expenses</h3>
-              <p style="font-size: 24px; font-weight: bold; color: #6366f1; margin: 0;">${expenses.length}</p>
+              <p style="font-size: 24px; font-weight: bold; color: #6366f1; margin: 0;">${(expenses as any[]).length}</p>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@ export function PDFExport({ onClose }: PDFExportProps) {
         <div style="margin-bottom: 30px;">
           <h2 style="color: #333; border-bottom: 2px solid #6366f1; padding-bottom: 5px;">Category Breakdown</h2>
           <div style="margin-top: 15px;">
-            ${analytics?.categoryBreakdown?.map((cat: any) => `
+            ${(analytics as any)?.categoryBreakdown?.map((cat: any) => `
               <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #e5e7eb;">
                 <div style="display: flex; align-items: center;">
                   <div style="width: 12px; height: 12px; background-color: ${cat.color}; border-radius: 50%; margin-right: 10px;"></div>
