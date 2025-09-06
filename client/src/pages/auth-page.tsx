@@ -103,7 +103,7 @@ export default function AuthPage() {
                 <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                   <DollarSign className="h-6 w-6 text-white" />
                 </div>
-                <h1 className="text-2xl font-bold text-gray-900">ExpenseAI</h1>
+                <h1 className="text-2xl font-bold text-gray-900">SpendSight</h1>
               </div>
               
               <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-6">

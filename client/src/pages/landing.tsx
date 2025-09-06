@@ -14,11 +14,11 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <img 
-              src="/@assets/generated_images/ExpenseAI_fintech_app_logo_91bcee83.png" 
-              alt="ExpenseAI Logo" 
+              src="/@assets/generated_images/SpendSight_finance_tracker_logo_f7c8de5f.png" 
+              alt="SpendSight Logo" 
               className="w-8 h-8 rounded-lg"
             />
-            <span className="text-xl font-semibold text-gray-900">ExpenseAI</span>
+            <span className="text-xl font-semibold text-gray-900">SpendSight</span>
           </div>
           <Button onClick={handleLogin} className="bg-primary hover:bg-primary/90" data-testid="button-login">
             Sign In
@@ -118,7 +118,7 @@ export default function Landing() {
         <div className="container mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Take Control of Your Finances?</h2>
           <p className="text-xl mb-8 text-blue-100">
-            Join thousands of users who are already saving money with ExpenseAI.
+            Join thousands of users who are already saving money with SpendSight.
           </p>
           <Button 
             onClick={handleLogin} 
@@ -137,14 +137,14 @@ export default function Landing() {
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <img 
-              src="/@assets/generated_images/ExpenseAI_fintech_app_logo_91bcee83.png" 
-              alt="ExpenseAI Logo" 
+              src="/@assets/generated_images/SpendSight_finance_tracker_logo_f7c8de5f.png" 
+              alt="SpendSight Logo" 
               className="w-6 h-6 rounded"
             />
-            <span className="text-lg font-semibold">ExpenseAI</span>
+            <span className="text-lg font-semibold">SpendSight</span>
           </div>
           <p className="text-gray-400">
-            © 2024 ExpenseAI. Intelligent expense tracking for everyone.
+            © 2024 SpendSight. Intelligent expense tracking for everyone.
           </p>
         </div>
       </footer>

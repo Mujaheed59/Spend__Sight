@@ -44,11 +44,11 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         {/* Logo */}
         <div className="flex items-center flex-shrink-0 px-4">
           <img 
-            src="/@assets/generated_images/ExpenseAI_fintech_app_logo_91bcee83.png" 
-            alt="ExpenseAI Logo" 
+            src="/@assets/generated_images/SpendSight_finance_tracker_logo_f7c8de5f.png" 
+            alt="SpendSight Logo" 
             className="w-8 h-8 rounded-lg"
           />
-          <span className="ml-2 text-xl font-semibold text-gray-900">ExpenseAI</span>
+          <span className="ml-2 text-xl font-semibold text-gray-900">SpendSight</span>
         </div>
 
         {/* Navigation */}
