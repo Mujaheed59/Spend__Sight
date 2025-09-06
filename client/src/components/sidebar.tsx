@@ -1,6 +1,7 @@
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useLocation } from "wouter";
 import { 
   LayoutDashboard, 
   Plus, 
@@ -13,12 +14,12 @@ import {
 } from "lucide-react";
 
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: LayoutDashboard, current: true, action: null },
-  { name: 'Add Expense', href: '#', icon: Plus, current: false, action: 'add-expense' },
-  { name: 'Categories', href: '#', icon: Tags, current: false, action: 'manage-categories' },
-  { name: 'Budgets', href: '#', icon: Target, current: false, action: 'budget-settings' },
-  { name: 'Reports', href: '#', icon: FileText, current: false, action: 'export-reports' },
-  { name: 'AI Insights', href: '#', icon: Brain, current: false, action: 'generate-insights' },
+  { name: 'Dashboard', href: '/', icon: LayoutDashboard, action: null },
+  { name: 'Add Expense', href: '#', icon: Plus, action: 'add-expense' },
+  { name: 'Categories', href: '#', icon: Tags, action: 'manage-categories' },
+  { name: 'Budgets', href: '#', icon: Target, action: 'budget-settings' },
+  { name: 'Reports', href: '/reports', icon: FileText, action: null },
+  { name: 'AI Insights', href: '/ai-insights', icon: Brain, action: null },
 ];
 
 interface SidebarProps {
@@ -26,14 +27,17 @@ interface SidebarProps {
 }
 
 export function Sidebar({ onNavigate }: SidebarProps) {
-  const { user } = useAuth();
+  const { user, logoutMutation } = useAuth();
+  const [location, navigate] = useLocation();
 
   const handleLogout = () => {
-    window.location.href = "/api/logout";
+    logoutMutation.mutate();
   };
 
   const handleNavClick = (item: any) => {
-    if (item.action && onNavigate) {
+    if (item.href && item.href !== '#') {
+      navigate(item.href);
+    } else if (item.action && onNavigate) {
       onNavigate(item.action);
     }
   };
@@ -44,7 +48,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
         {/* Logo */}
         <div className="flex items-center flex-shrink-0 px-4">
           <img 
-            src="/@assets/generated_images/SpendSight_finance_tracker_logo_f7c8de5f.png" 
+            src="/@assets/generated_images/SpendSight_finance_app_logo_2a0ceabb.png" 
             alt="SpendSight Logo" 
             className="w-8 h-8 rounded-lg"
           />
@@ -59,10 +63,10 @@ export function Sidebar({ onNavigate }: SidebarProps) {
                 key={item.name}
                 onClick={() => handleNavClick(item)}
                 className={cn(
-                  item.current
-                    ? 'bg-primary text-white'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                  'group flex items-center px-2 py-2 text-sm font-medium rounded-md w-full text-left'
+                  (item.href === location || (item.href === '/' && location === '/'))
+                    ? 'bg-orange-500 text-white'
+                    : 'text-gray-600 hover:bg-orange-50 hover:text-orange-700',
+                  'group flex items-center px-2 py-2 text-sm font-medium rounded-md w-full text-left transition-colors'
                 )}
                 data-testid={`nav-${item.name.toLowerCase().replace(' ', '-')}`}
               >

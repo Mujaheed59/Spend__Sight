@@ -8,6 +8,8 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Dashboard from "@/pages/dashboard";
 import AuthPage from "@/pages/auth-page";
+import AIInsightsPage from "@/pages/ai-insights";
+import ReportsPage from "@/pages/reports";
 
 function Router() {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -27,6 +29,12 @@ function Router() {
     <Switch>
       <Route path="/auth">
         {isAuthenticated ? <Dashboard /> : <AuthPage />}
+      </Route>
+      <Route path="/ai-insights">
+        {isAuthenticated ? <AIInsightsPage /> : <AuthPage />}
+      </Route>
+      <Route path="/reports">
+        {isAuthenticated ? <ReportsPage /> : <AuthPage />}
       </Route>
       <Route path="/">
         {isAuthenticated ? <Dashboard /> : <Landing />}
