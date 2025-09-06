@@ -86,14 +86,14 @@ export function PDFExport({ onClose }: PDFExportProps) {
         <div style="margin-bottom: 30px;">
           <h2 style="color: #333; border-bottom: 2px solid #6366f1; padding-bottom: 5px;">AI Insights</h2>
           <div style="margin-top: 15px;">
-            ${(insights as any[]).slice(0, 3).map((insight: any, index: number) => `
-              <div style="background: ${insight.type === 'alert' ? '#fef2f2' : insight.type === 'warning' ? '#fffbeb' : insight.type === 'goal' ? '#f0fdf4' : '#f8fafc'}; 
+            ${Array.isArray(insights) ? insights.slice(0, 3).map((insight: any, index: number) => 
+              `<div style="background: ${insight.type === 'alert' ? '#fef2f2' : insight.type === 'warning' ? '#fffbeb' : insight.type === 'goal' ? '#f0fdf4' : '#f8fafc'}; 
                           border-left: 4px solid ${insight.type === 'alert' ? '#ef4444' : insight.type === 'warning' ? '#f59e0b' : insight.type === 'goal' ? '#10b981' : '#6366f1'}; 
                           padding: 15px; margin-bottom: 15px; border-radius: 0 8px 8px 0;">
                 <h3 style="margin: 0 0 8px 0; color: #333; font-size: 16px;">• ${insight.title}</h3>
                 <p style="margin: 0; color: #666; line-height: 1.5;">${insight.description}</p>
-              </div>
-            `).join('') || '<p>No insights available</p>'}
+              </div>`
+            ).join('') : '<p>No insights available</p>'}
           </div>
         </div>
 
@@ -109,14 +109,14 @@ export function PDFExport({ onClose }: PDFExportProps) {
               </tr>
             </thead>
             <tbody>
-              ${(expenses as any[]).slice(0, 10).map((expense: any) => `
-                <tr>
+              ${Array.isArray(expenses) ? expenses.slice(0, 10).map((expense: any) => 
+                `<tr>
                   <td style="padding: 10px; border: 1px solid #e5e7eb;">${new Date(expense.date).toLocaleDateString()}</td>
                   <td style="padding: 10px; border: 1px solid #e5e7eb;">${expense.description}</td>
                   <td style="padding: 10px; border: 1px solid #e5e7eb;">${expense.category?.name || 'Uncategorized'}</td>
                   <td style="padding: 10px; border: 1px solid #e5e7eb; text-align: right;">₹${expense.amount}</td>
-                </tr>
-              `).join('') || '<tr><td colspan="4" style="padding: 20px; text-align: center;">No expenses found</td></tr>'}
+                </tr>`
+              ).join('') : '<tr><td colspan="4" style="padding: 20px; text-align: center;">No expenses found</td></tr>'}
             </tbody>
           </table>
         </div>
