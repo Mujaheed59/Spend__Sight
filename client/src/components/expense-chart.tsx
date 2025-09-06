@@ -5,16 +5,12 @@ import { useState, useMemo } from "react";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useToast } from "@/hooks/use-toast";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
 } from "recharts";
 
 export function ExpenseChart() {
@@ -45,6 +41,19 @@ export function ExpenseChart() {
     retry: false,
   });
 
+  const { data: financeNews, isLoading: newsLoading } = useQuery({
+    queryKey: ['/api/finance-news'],
+    queryFn: async () => {
+      const response = await fetch('/api/finance-news');
+      if (!response.ok) {
+        throw new Error('Failed to fetch finance news');
+      }
+      return response.json();
+    },
+    retry: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
   // Memoize currency formatter - MOVED BEFORE EARLY RETURNS
   const formatCurrency = useMemo(() => {
     const formatter = new Intl.NumberFormat('en-IN', {
@@ -56,18 +65,20 @@ export function ExpenseChart() {
   }, []);
 
   // Memoize chart data to prevent unnecessary re-renders - MOVED BEFORE EARLY RETURNS
-  const { trendData, categoryData } = useMemo(() => {
-    const trendData = (stats as any)?.dailyTrend || [];
-    const categoryData = (stats as any)?.categoryBreakdown?.map((cat: any) => ({
+  const categoryData = useMemo(() => {
+    const data = (stats as any)?.categoryBreakdown?.map((cat: any) => ({
       name: cat.categoryName,
       value: cat.amount,
       color: cat.color,
     })) || [];
     
-    return { trendData, categoryData };
+    return data;
   }, [stats]);
 
-  if (isLoading) {
+  // Color palette for pie chart
+  const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'];
+
+  if (isLoading || newsLoading) {
     return (
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <Card className="animate-pulse">
@@ -90,14 +101,61 @@ export function ExpenseChart() {
     );
   }
 
+  const handleNewsClick = (newsItem: any) => {
+    // Open news article in new tab/window
+    if (newsItem.url) {
+      window.open(newsItem.url, '_blank');
+    }
+  };
+
   return (
     <>
-      {/* Expense Trend Chart */}
+      {/* Finance News Feed */}
       <Card className="bg-white shadow">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
-          <CardTitle className="text-lg font-medium text-gray-900">Expense Trend</CardTitle>
+          <CardTitle className="text-lg font-medium text-gray-900">📈 Finance News</CardTitle>
+          <span className="text-sm text-gray-500">Latest Updates</span>
+        </CardHeader>
+        <CardContent>
+          <div className="h-64 overflow-y-auto space-y-3" data-testid="finance-news-feed">
+            {(financeNews as any) && (financeNews as any).length > 0 ? (
+              (financeNews as any).map((newsItem: any, index: number) => (
+                <div 
+                  key={index}
+                  className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                  onClick={() => handleNewsClick(newsItem)}
+                  data-testid={`news-item-${index}`}
+                >
+                  <h4 className="font-medium text-sm text-gray-900 mb-1 line-clamp-2">
+                    {newsItem.title}
+                  </h4>
+                  <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+                    {newsItem.description}
+                  </p>
+                  <div className="flex justify-between items-center text-xs text-gray-500">
+                    <span className="font-medium">{newsItem.source}</span>
+                    <span>{newsItem.publishedAt}</span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-500">
+                <div className="text-center">
+                  <p className="text-sm font-medium">📰 Finance news loading...</p>
+                  <p className="text-xs">Stay updated with latest market trends</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Enhanced Category Breakdown Chart */}
+      <Card className="bg-white shadow">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
+          <CardTitle className="text-lg font-medium text-gray-900">💰 Spending Breakdown</CardTitle>
           <Select value={period} onValueChange={setPeriod}>
-            <SelectTrigger className="w-32" data-testid="select-trend-period">
+            <SelectTrigger className="w-32" data-testid="select-category-period">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -108,46 +166,6 @@ export function ExpenseChart() {
           </Select>
         </CardHeader>
         <CardContent>
-          <div className="h-64" data-testid="chart-expense-trend">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={trendData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis 
-                  dataKey="date" 
-                  tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                  stroke="#666"
-                />
-                <YAxis 
-                  tickFormatter={(value) => `₹${value}`}
-                  stroke="#666"
-                />
-                <Tooltip 
-                  formatter={(value: number) => [formatCurrency(value), 'Amount']}
-                  labelFormatter={(label) => new Date(label).toLocaleDateString()}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="amount" 
-                  stroke="#2563eb" 
-                  strokeWidth={2}
-                  dot={{ fill: '#2563eb', strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Category Breakdown Chart */}
-      <Card className="bg-white shadow">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
-          <CardTitle className="text-lg font-medium text-gray-900">Category Breakdown</CardTitle>
-          <span className="text-sm text-gray-500">
-            {period === "7" ? "Last 7 days" : period === "30" ? "Last 30 days" : "Last 90 days"}
-          </span>
-        </CardHeader>
-        <CardContent>
           <div className="h-64" data-testid="chart-category-breakdown">
             {categoryData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -156,21 +174,36 @@ export function ExpenseChart() {
                     data={categoryData}
                     cx="50%"
                     cy="50%"
-                    outerRadius={80}
+                    outerRadius={70}
+                    innerRadius={30}
                     dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                    labelLine={false}
                   >
                     {categoryData.map((entry: any, index: number) => (
-                      <Cell key={`category-cell-${entry.name}-${index}`} fill={entry.color} />
+                      <Cell 
+                        key={`category-cell-${entry.name}-${index}`} 
+                        fill={entry.color || COLORS[index % COLORS.length]} 
+                      />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                  <Tooltip 
+                    formatter={(value: number) => [formatCurrency(value), 'Amount']}
+                    labelFormatter={(label) => `Category: ${label}`}
+                  />
+                  <Legend 
+                    verticalAlign="bottom" 
+                    height={36}
+                    formatter={(value) => (
+                      <span className="text-xs">{value}</span>
+                    )}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             ) : (
               <div className="flex items-center justify-center h-full text-gray-500">
                 <div className="text-center">
-                  <p className="text-lg font-medium">No expenses yet</p>
+                  <p className="text-lg font-medium">📊 No expenses yet</p>
                   <p className="text-sm">Add your first expense to see the breakdown</p>
                 </div>
               </div>

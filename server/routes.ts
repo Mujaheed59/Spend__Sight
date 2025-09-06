@@ -17,6 +17,110 @@ export async function registerRoutes(app: Express, httpServer?: any): Promise<Se
   await initializeDefaultCategories();
 
   // -----------------------
+  // Finance News API
+  // -----------------------
+  app.get("/api/finance-news", async (req, res) => {
+    try {
+      // Mock finance news data based on real Indian fintech trends
+      const financeNews = [
+        {
+          title: "India's Fintech Sector Ranks 3rd Globally in H1 2025 Funding",
+          description: "India secured $889 million in fintech funding, with early-stage funding up 10% and 16 M&A deals recorded.",
+          url: "https://www.business-standard.com/industry/news/india-fintech-funding-h1-2025-tracxn-startups-ma-deals-125070400644_1.html",
+          source: "Business Standard",
+          publishedAt: new Date().toISOString(),
+          category: "fintech"
+        },
+        {
+          title: "MoneyView Becomes India's Latest Fintech Unicorn at $1.21B Valuation",
+          description: "The lending platform joins India's growing list of 24 fintech unicorns, focusing on personal loans and financial services.",
+          url: "https://fintechnews.sg/108940/fintech-india/the-complete-list-of-india-fintech-unicorns-2025/",
+          source: "FinTech News",
+          publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+          category: "fintech"
+        },
+        {
+          title: "Groww Acquires Fisdom for $150M in Largest H1 2025 Deal",
+          description: "The acquisition strengthens Groww's position in wealth management and investment advisory services.",
+          url: "#",
+          source: "Economic Times",
+          publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+          category: "fintech"
+        },
+        {
+          title: "RBI Governor Meets Fintech Leaders, Signals Regulatory Easing",
+          description: "Sanjay Malhotra's meeting with industry leaders indicates potential policy support for responsible fintech innovation.",
+          url: "#",
+          source: "Mint",
+          publishedAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+          category: "banking"
+        },
+        {
+          title: "UPI International Expansion Reaches France, Singapore",
+          description: "India's digital payment system continues global expansion with new partnerships and cross-border capabilities.",
+          url: "#",
+          source: "Hindu BusinessLine",
+          publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
+          category: "payments"
+        },
+        {
+          title: "Indian Fintech Market to Reach $95.30B by 2030",
+          description: "Market expected to grow at 16.65% CAGR driven by digital adoption and financial inclusion initiatives.",
+          url: "https://www.mordorintelligence.com/industry-reports/india-fintech-market",
+          source: "Mordor Intelligence",
+          publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
+          category: "markets"
+        }
+      ];
+      
+      res.json(financeNews);
+    } catch (error) {
+      console.error("Error fetching finance news:", error);
+      res.status(500).json({ message: "Failed to fetch finance news" });
+    }
+  });
+
+  // -----------------------
+  // User Profile
+  // -----------------------
+  app.get("/api/user/profile", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      // For now, return a basic profile. In future, this could be stored in database
+      const profile = {
+        id: userId,
+        monthlyIncome: 50000, // Default monthly income in INR
+        currency: 'INR',
+        timezone: 'Asia/Kolkata'
+      };
+      res.json(profile);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      res.status(500).json({ message: "Failed to fetch user profile" });
+    }
+  });
+
+  app.put("/api/user/profile", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const { monthlyIncome, currency, timezone } = req.body;
+      
+      // For now, just return the updated data. In future, store in database
+      const updatedProfile = {
+        id: userId,
+        monthlyIncome: monthlyIncome || 50000,
+        currency: currency || 'INR',
+        timezone: timezone || 'Asia/Kolkata'
+      };
+      
+      res.json(updatedProfile);
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      res.status(500).json({ message: "Failed to update user profile" });
+    }
+  });
+
+  // -----------------------
   // Categories
   // -----------------------
   app.get("/api/categories", isAuthenticated, async (req, res) => {

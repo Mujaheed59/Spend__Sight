@@ -5,6 +5,8 @@ import { useWebSocket } from "@/hooks/useWebSocket";
 import { Sidebar } from "@/components/sidebar";
 import { StatsCards } from "@/components/stats-cards";
 import { ExpenseChart } from "@/components/expense-chart";
+import { FinanceNews } from "@/components/finance-news";
+import { BudgetProgress } from "@/components/budget-progress";
 import { AIInsights } from "@/components/ai-insights";
 import { BudgetRecommendations } from "@/components/budget-recommendations";
 import { RecentExpenses } from "@/components/recent-expenses";
@@ -165,7 +167,12 @@ export default function Dashboard() {
                 <StatsCards />
               </div>
 
-              {/* Charts Section */}
+              {/* Budget Progress Section */}
+              <div className="mt-8">
+                <BudgetProgress onOpenBudgetSettings={() => setShowBudgetSettings(true)} />
+              </div>
+
+              {/* Charts and News Section */}
               <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
                 <ExpenseChart />
               </div>
