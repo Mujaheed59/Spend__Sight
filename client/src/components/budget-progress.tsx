@@ -26,12 +26,21 @@ export function BudgetProgress({ onOpenBudgetSettings }: BudgetProgressProps) {
     retry: false,
   });
 
+  const { data: categories } = useQuery({
+    queryKey: ['/api/categories'],
+    retry: false,
+  });
+
   const budgetData = useMemo(() => {
-    if (!budgets || !expenses) return [];
+    if (!budgets || !expenses || !categories) return [];
 
     return (budgets as any[]).map((budget: any) => {
       const currentMonth = new Date().getMonth();
       const currentYear = new Date().getFullYear();
+      
+      // Get category name
+      const category = (categories as any[])?.find((cat: any) => cat.id === budget.categoryId);
+      const categoryName = category?.name || (budget.categoryId === 'all' ? 'All Categories' : 'Unknown Category');
       
       // Calculate spent amount for this budget's category in current period
       const categoryExpenses = (expenses as any[]).filter((expense: any) => {
@@ -54,6 +63,7 @@ export function BudgetProgress({ onOpenBudgetSettings }: BudgetProgressProps) {
       
       return {
         ...budget,
+        categoryName,
         spent,
         budgetAmount,
         percentage,
@@ -62,7 +72,7 @@ export function BudgetProgress({ onOpenBudgetSettings }: BudgetProgressProps) {
         categoryExpenses: categoryExpenses.length
       };
     });
-  }, [budgets, expenses]);
+  }, [budgets, expenses, categories]);
 
   const monthlyIncome = useMemo(() => {
     return (userProfile as any)?.monthlyIncome || 0;
@@ -162,7 +172,7 @@ export function BudgetProgress({ onOpenBudgetSettings }: BudgetProgressProps) {
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
                       <h4 className="font-medium text-sm text-gray-900">
-                        {budget.categoryName || 'All Categories'}
+                        {budget.categoryName}
                       </h4>
                       <Badge 
                         variant={budget.isOverBudget ? "destructive" : budget.percentage >= 80 ? "secondary" : "default"}
