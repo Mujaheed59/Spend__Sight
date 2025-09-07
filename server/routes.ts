@@ -239,6 +239,52 @@ export async function registerRoutes(app: Express, httpServer?: any): Promise<Se
   });
 
   // -----------------------
+  // Budgets
+  // -----------------------
+  app.get("/api/budgets", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const budgets = await storage.getBudgetsByUser(userId);
+      res.json(budgets);
+    } catch (error) {
+      console.error("Error fetching budgets:", error);
+      res.status(500).json({ message: "Failed to fetch budgets" });
+    }
+  });
+
+  app.post("/api/budgets", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const validatedData = insertBudgetSchema.parse(req.body);
+
+      const budget = await storage.createBudget({
+        ...validatedData,
+        userId,
+      });
+
+      res.json(budget);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid data", errors: error.errors });
+      } else {
+        console.error("Error creating budget:", error);
+        res.status(500).json({ message: "Failed to create budget" });
+      }
+    }
+  });
+
+  app.delete("/api/budgets/:id", isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteBudget(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting budget:", error);
+      res.status(500).json({ message: "Failed to delete budget" });
+    }
+  });
+
+  // -----------------------
   // Analytics
   // -----------------------
   app.get("/api/analytics/stats", isAuthenticated, async (req: any, res) => {
