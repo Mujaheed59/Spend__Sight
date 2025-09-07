@@ -95,7 +95,7 @@ export default function ReportsPage() {
     
     // Category breakdown
     const categoryBreakdown = filteredExpenses.reduce((acc, expense) => {
-      const category = expense.categoryName || 'Other';
+      const category = expense.category?.name || 'Other';
       const amount = parseFloat(expense.amount);
       acc[category] = (acc[category] || 0) + (isNaN(amount) ? 0 : amount);
       return acc;
@@ -257,57 +257,57 @@ export default function ReportsPage() {
         <div id="report-content" className="space-y-6">
           {/* Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+            <Card className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg">
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-blue-100 text-xs md:text-sm">Total Spent</p>
+                    <p className="text-emerald-100 text-xs md:text-sm">Total Spent</p>
                     <p className="text-lg md:text-2xl font-bold">{formatCurrency(reportData.totalAmount)}</p>
                   </div>
-                  <DollarSign className="h-6 md:h-8 w-6 md:w-8 text-blue-200" />
+                  <DollarSign className="h-6 md:h-8 w-6 md:w-8 text-emerald-200" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
+            <Card className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-lg">
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-green-100 text-xs md:text-sm">Average</p>
+                    <p className="text-cyan-100 text-xs md:text-sm">Average</p>
                     <p className="text-lg md:text-2xl font-bold">{formatCurrency(reportData.avgAmount)}</p>
                   </div>
-                  <TrendingUp className="h-6 md:h-8 w-6 md:w-8 text-green-200" />
+                  <TrendingUp className="h-6 md:h-8 w-6 md:w-8 text-cyan-200" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+            <Card className="bg-gradient-to-r from-violet-500 to-violet-600 text-white shadow-lg">
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-purple-100 text-xs md:text-sm">Transactions</p>
+                    <p className="text-violet-100 text-xs md:text-sm">Transactions</p>
                     <p className="text-lg md:text-2xl font-bold">{reportData.transactionCount}</p>
                   </div>
-                  <BarChart3 className="h-6 md:h-8 w-6 md:w-8 text-purple-200" />
+                  <BarChart3 className="h-6 md:h-8 w-6 md:w-8 text-violet-200" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+            <Card className="bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-lg">
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-orange-100 text-xs md:text-sm">Top Category</p>
+                    <p className="text-rose-100 text-xs md:text-sm">Top Category</p>
                     <p className="text-sm md:text-lg font-bold truncate">
                       {reportData.topCategory?.name || 'None'}
                     </p>
                     {reportData.topCategory && (
-                      <p className="text-xs text-orange-200">
+                      <p className="text-xs text-rose-200">
                         {formatCurrency(Number(reportData.topCategory.value))}
                       </p>
                     )}
                   </div>
-                  <PieChartIcon className="h-6 md:h-8 w-6 md:w-8 text-orange-200" />
+                  <PieChartIcon className="h-6 md:h-8 w-6 md:w-8 text-rose-200" />
                 </div>
               </CardContent>
             </Card>
@@ -428,7 +428,7 @@ export default function ReportsPage() {
                           <td className="p-2 truncate max-w-xs">{expense.description}</td>
                           <td className="p-2">
                             <Badge variant="outline" className="text-xs">
-                              {expense.categoryName || 'Other'}
+                              {expense.category?.name || 'Other'}
                             </Badge>
                           </td>
                           <td className="p-2 text-right font-medium">
