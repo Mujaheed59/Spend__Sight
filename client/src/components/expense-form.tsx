@@ -46,6 +46,7 @@ export function ExpenseForm({ open, onClose }: ExpenseFormProps) {
       queryClient.invalidateQueries({ queryKey: ['/api/expenses'] });
       queryClient.invalidateQueries({ queryKey: ['/api/analytics/stats'] });
       queryClient.invalidateQueries({ queryKey: ['/api/insights'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/budgets'] });
       toast({
         title: "Expense Added",
         description: "Your expense has been successfully recorded. AI will analyze your spending patterns.",

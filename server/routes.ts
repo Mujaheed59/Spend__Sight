@@ -25,7 +25,7 @@ export async function registerRoutes(app: Express, httpServer?: any): Promise<Se
       const financeNews = [
         {
           title: "India's Fintech Sector Ranks 3rd Globally in H1 2025 Funding",
-          description: "India secured $889 million in fintech funding, with early-stage funding up 10% and 16 M&A deals recorded.",
+          description: "India's fintech companies received $889 million in funding this half-year, showing strong investor confidence. This means more digital payment and lending apps are being developed, which could lead to better financial services for everyday users like easier loan approvals and lower transaction fees.",
           url: "https://www.business-standard.com/industry/news/india-fintech-funding-h1-2025-tracxn-startups-ma-deals-125070400644_1.html",
           source: "Business Standard",
           publishedAt: new Date().toISOString(),
@@ -33,23 +33,39 @@ export async function registerRoutes(app: Express, httpServer?: any): Promise<Se
         },
         {
           title: "MoneyView Becomes India's Latest Fintech Unicorn at $1.21B Valuation",
-          description: "The lending platform joins India's growing list of 24 fintech unicorns, focusing on personal loans and financial services.",
+          description: "MoneyView, a personal loan platform, is now valued at over $1 billion (called a 'unicorn' in startup terms). This means they've grown rapidly by helping people get personal loans more easily through their app, joining 24 other billion-dollar fintech companies in India.",
           url: "https://fintechnews.sg/108940/fintech-india/the-complete-list-of-india-fintech-unicorns-2025/",
           source: "FinTech News",
           publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
           category: "fintech"
         },
         {
+          title: "Nifty 50 Hits New High: Banking Stocks Lead Rally",
+          description: "India's main stock market index (Nifty 50) reached record levels, driven by banking stocks. This is good news for investors and suggests confidence in India's banking sector. For everyday users, this often means banks may offer better interest rates on savings and more competitive loan rates.",
+          url: "#",
+          source: "Economic Times",
+          publishedAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+          category: "stocks"
+        },
+        {
           title: "Groww Acquires Fisdom for $150M in Largest H1 2025 Deal",
-          description: "The acquisition strengthens Groww's position in wealth management and investment advisory services.",
+          description: "Groww, a popular investment app, bought Fisdom (a wealth management platform) for $150 million. This means Groww users will likely get access to more investment advisory services and better tools for managing their money and planning for goals like retirement or buying a home.",
           url: "#",
           source: "Economic Times",
           publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
           category: "fintech"
         },
         {
+          title: "IT Stocks Surge on AI Boom: TCS, Infosys Lead Gains",
+          description: "Technology company stocks like TCS and Infosys are rising due to increased demand for AI services. This trend means more job opportunities in tech and could lead to salary increases in the IT sector. For investors, tech stocks are showing strong performance.",
+          url: "#",
+          source: "Mint",
+          publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+          category: "stocks"
+        },
+        {
           title: "RBI Governor Meets Fintech Leaders, Signals Regulatory Easing",
-          description: "Sanjay Malhotra's meeting with industry leaders indicates potential policy support for responsible fintech innovation.",
+          description: "The Reserve Bank of India (RBI) Governor met with fintech company leaders, suggesting they may relax some rules. This could mean faster approvals for new financial apps and services, potentially leading to more innovative payment solutions and easier access to digital banking for consumers.",
           url: "#",
           source: "Mint",
           publishedAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
@@ -57,15 +73,23 @@ export async function registerRoutes(app: Express, httpServer?: any): Promise<Se
         },
         {
           title: "UPI International Expansion Reaches France, Singapore",
-          description: "India's digital payment system continues global expansion with new partnerships and cross-border capabilities.",
+          description: "India's UPI (Unified Payments Interface) digital payment system is now available in France and Singapore. This means Indians traveling to these countries can use UPI to pay instead of carrying cash or using expensive international cards, saving money on transaction fees.",
           url: "#",
           source: "Hindu BusinessLine",
           publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
           category: "payments"
         },
         {
+          title: "FMCG Stocks Rally as Rural Demand Improves",
+          description: "Fast-moving consumer goods (FMCG) company stocks are rising as rural areas show increased spending on everyday items like soaps, snacks, and groceries. This indicates improving economic conditions in villages and small towns, which is positive for the overall economy and stock market.",
+          url: "#",
+          source: "Business Standard",
+          publishedAt: new Date(Date.now() - 10 * 60 * 60 * 1000).toISOString(),
+          category: "stocks"
+        },
+        {
           title: "Indian Fintech Market to Reach $95.30B by 2030",
-          description: "Market expected to grow at 16.65% CAGR driven by digital adoption and financial inclusion initiatives.",
+          description: "India's fintech market is expected to grow to $95.30 billion by 2030, expanding at 16.65% annually. This growth means more digital payment options, easier access to loans and insurance, and better financial management tools will become available to everyday users over the next few years.",
           url: "https://www.mordorintelligence.com/industry-reports/india-fintech-market",
           source: "Mordor Intelligence",
           publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
