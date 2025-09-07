@@ -67,6 +67,8 @@ export function FinanceNews({ compact = false }: FinanceNewsProps) {
       case 'fintech': return <TrendingUp className="h-3 w-3" />;
       case 'banking': return <Building className="h-3 w-3" />;
       case 'markets': return <DollarSign className="h-3 w-3" />;
+      case 'stocks': return <TrendingUp className="h-3 w-3" />;
+      case 'payments': return <DollarSign className="h-3 w-3" />;
       default: return <Globe className="h-3 w-3" />;
     }
   };
