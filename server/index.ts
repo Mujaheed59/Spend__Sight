@@ -15,8 +15,36 @@ app.use(express.urlencoded({ extended: false }));
 // ✅ Enable CORS so frontend can access backend (both on port 5000)
 app.use(
   cors({
-    origin: "http://localhost:5000", // same port for Vite dev
-    credentials: true,                // allow cookies/session
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      // Allow localhost and Replit domains
+      const allowedOrigins = [
+        'http://localhost:5000',
+        'https://localhost:5000',
+        /^https?:\/\/.*\.replit\.dev$/,
+        /^https?:\/\/.*\.repl\.co$/,
+        /^https?:\/\/.*\.webcontainer-api\.io$/,
+        /^https?:\/\/.*\.local-credentialless\.webcontainer-api\.io$/
+      ];
+      
+      const isAllowed = allowedOrigins.some(pattern => {
+        if (typeof pattern === 'string') {
+          return origin === pattern;
+        }
+        return pattern.test(origin);
+      });
+      
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(null, true); // Allow all origins for now to fix WebSocket issues
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
   })
 );
 

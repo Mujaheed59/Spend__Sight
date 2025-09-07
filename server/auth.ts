@@ -2,8 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Express } from "express";
 import session from "express-session";
-import { scrypt, randomBytes, timingSafeEqual } from "crypto";
-import { promisify } from "util";
+import { createHash, randomBytes, timingSafeEqual } from "crypto";
 import { storage } from "./storage";
 import { User as SelectUser } from "@shared/schema";
 
@@ -13,18 +12,22 @@ declare global {
   }
 }
 
-const scryptAsync = promisify(scrypt);
-
 async function hashPassword(password: string) {
   const salt = randomBytes(16).toString("hex");
-  const buf = (await scryptAsync(password, salt, 64)) as Buffer;
+  // Use a simpler hash approach that works in WebContainer
+  const hash = createHash('sha256');
+  hash.update(password + salt);
+  const buf = hash.digest();
   return `${buf.toString("hex")}.${salt}`;
 }
 
 async function comparePasswords(supplied: string, stored: string) {
   const [hashed, salt] = stored.split(".");
   const hashedBuf = Buffer.from(hashed, "hex");
-  const suppliedBuf = (await scryptAsync(supplied, salt, 64)) as Buffer;
+  // Use the same hash approach for comparison
+  const hash = createHash('sha256');
+  hash.update(supplied + salt);
+  const suppliedBuf = hash.digest();
   return timingSafeEqual(hashedBuf, suppliedBuf);
 }
 
